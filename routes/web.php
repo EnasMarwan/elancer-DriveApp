@@ -25,9 +25,12 @@ Route::get('/dashboard', function ()
 
 require __DIR__.'/auth.php';
 
-Route::get('/files',[FilesController::class, 'index'])->name('library.index');
+Route::get('/files',[FilesController::class, 'index'])->name('library.index')->middleware(['auth']);
 Route::get('/create',[FilesController::class, 'createfolder'])->name('create.folder');
+Route::get('/{id}/file',[FilesController::class, 'getfile'])->name('file.get');
+Route::get('/{id}/download',[FilesController::class, 'downloadfile'])->name('file.download');
 Route::get('/createe',[FilesController::class, 'addtofolder'])->name('add.folder');
 Route::get('/{id}/files',[FilesController::class, 'filesinfolder'])->name('show.files');
- Route::get('/upload',[FilesController::class, 'create'])->middleware(['auth'])->name('create.file');
+Route::get('/upload',[FilesController::class, 'create'])->middleware(['auth'])->name('create.file');
 Route::post('/upload',[FilesController::class, 'store'])->name('library.store');
+Route::delete('/{id}',[FilesController::class, 'destroy'])->name('file.destroy');

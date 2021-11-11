@@ -47,17 +47,18 @@
                {{ $file->namefolder }}
             </a>
            
-            <div class="file-item-changed">02/16/2018</div>
+           
             <div class="file-item-actions btn-group">
-                <button type="button" class="btn btn-default btn-sm rounded-pill icon-btn borderless md-btn-flat hide-arrow dropdown-toggle" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="javascript:void(0)">Rename</a>
-                    <a class="dropdown-item" href="javascript:void(0)">Move</a>
-                    <a class="dropdown-item" href="javascript:void(0)">Copy</a>
-                    <a class="dropdown-item" href="javascript:void(0)">Remove</a>
-                </div>
+                 <form action="{{ route('file.destroy', $file->id) }}" method="post">
+                    @csrf
+                    @method('delete')
+                <button  class="btn btn-default btn-sm rounded-pill icon-btn borderless md-btn-flat hide-arrow ">
+                    <li class="fa fa-trash"></li>
+                </button>
+                </form>
             </div>
         </div>
+ 
 
     @endif
 
@@ -68,7 +69,8 @@
                 <input type="checkbox" class="custom-control-input" />
                 <span class="custom-control-label"></span>
             </label>
-            <a href="{{ asset( $file->file_path) }}" class="file-item-name" >
+            {{-- <a href="{{ asset( $file->file_path) }}" class="file-item-name" > --}}
+            <a href="{{route('file.get' ,$file->id)}}" class="file-item-name" >
             @if($file->file_type =='docx')
             <div class="file-item-icon far fa-file-word text-secondary"></div>
             @endif
@@ -87,15 +89,35 @@
             {{ $file->name }}
         </a>
             
-            <div class="file-item-changed">02/16/2018</div>
+           
             <div class="file-item-actions btn-group">
-                <button type="button" class="btn btn-default btn-sm rounded-pill icon-btn borderless md-btn-flat hide-arrow dropdown-toggle" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    {{-- <a class="dropdown-item" href="javascript:void(0)">Rename</a>
+            <form action="{{ route('file.destroy', $file->id) }}" method="post">
+                    @csrf
+                    @method('delete')
+                <button  class="btn btn-default btn-sm rounded-pill icon-btn borderless md-btn-flat hide-arrow ">
+                    <li class="fa fa-trash"></li>
+                </button>
+                </form>
+                <form action="{{ route('file.download', $file->id) }}" method="get">
+                    @csrf
+                <button  class="btn btn-default btn-sm rounded-pill icon-btn borderless md-btn-flat hide-arrow ">
+                    <li class="fa fa-download"></li>
+                </button>
+                </form>
+                {{-- <button type="button" class="btn btn-default btn-sm rounded-pill icon-btn borderless md-btn-flat hide-arrow dropdown-toggle" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button> --}}
+                {{-- <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="javascript:void(0)">Rename</a>
                     <a class="dropdown-item" href="javascript:void(0)">Move</a>
-                    <a class="dropdown-item" href="javascript:void(0)">Copy</a> --}}
-                    <a class="dropdown-item" href="javascript:void(0)">Remove</a>
-                </div>
+                    <a class="dropdown-item" href="javascript:void(0)">Copy</a> 
+                   <a class="dropdown-item" href="javascript:void(0)">
+                           <form action="{{ route('file.destroy', $file->id) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button class="dropdown-item" style="border:0"><li class="fa fa-trash"></li></button>
+                    
+                            </form>
+                    </a>
+                </div> --}}
             </div>
         </div>
 

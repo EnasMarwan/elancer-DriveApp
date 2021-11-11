@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\File;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+
 
 class FilesController extends Controller
 {
@@ -48,15 +50,14 @@ class FilesController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:csv,txt,png,doc,docx,pdf|max:2048'
-        ]);
+        // $request->validate([
+        //     'file' => 'mimes:csv,txt,png,doc,docx,pdf|max:2048',
+        //     'namefolder' => 'required|string'
+        // ]);
 
         $file = new File();
         $user = Auth::user();
         $file->user_id = $user->id;
-
-        
 
         if(!$request->file()){
             $file->namefolder = $request->namefolder;
@@ -97,11 +98,47 @@ class FilesController extends Controller
    
     public function filesinfolder($id){
         $user = Auth::user();
-        $files =$user->files()->where('parent_id',$id)
-        ->paginate('21');
+        $folder =$user->files()->where('id',$id)->first();
+        $files =$user->files()->where('parent_id',$id)->paginate('21');
         
         return view ('files', [
             'files' => $files,
+            'folder' => $folder,
         ]);
     }
+
+    public function destroy($id){
+        $file=File::where('id',$id)->first();
+
+        $file->delete(); 
+        if($file->namefolder==null){
+            return redirect('/files')
+            ->with('success', 'file deleted!');
+        }
+        else{
+        return redirect('/files')
+            ->with('success', 'folder deleted!');
+        }
+    }
+
+    public function getfile($id){
+        $file = File::where('id' , $id)->first();
+        $pathToFile =$file->file_path;
+        
+
+        return response()->file(public_path($pathToFile));
+        
+      
+    }
+    public function downloadfile($id){
+        $file = File::where('id' , $id)->first();
+        $pathToFile =$file->file_path;
+        
+
+        return response()->download(public_path($pathToFile));
+        
+      
+    }
+
+   
 }
