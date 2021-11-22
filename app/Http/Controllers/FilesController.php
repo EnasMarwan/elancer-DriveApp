@@ -18,9 +18,7 @@ class FilesController extends Controller
         $files =$user->files()->where('parent_id', null)->paginate('21');
         
         return view ('library', [
-          'files' => $files,
-         
-
+            'files' => $files,
         ]);
         
     }
@@ -50,10 +48,6 @@ class FilesController extends Controller
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'file' => 'mimes:csv,txt,png,doc,docx,pdf|max:2048',
-        //     'namefolder' => 'required|string'
-        // ]);
 
         $file = new File();
         $user = Auth::user();
